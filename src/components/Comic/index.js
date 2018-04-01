@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   Dimensions,
+  Linking,
 } from 'react-native';
 import {
   Colors,
@@ -25,18 +26,11 @@ type State = {};
 const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  wrapper: {
-    // padding: 10,
-  },
-  col: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
-  row: {
+  infoWrapper: {
     flex: 1,
     flexDirection: 'column',
     marginBottom: 50,
+    padding: 10,
   },
   title: {
     fontWeight: 'bold',
@@ -64,7 +58,7 @@ class Comic extends React.PureComponent<Props, State> {
 
     // Regular expression to find HTTP(S).
     /* eslint no-useless-escape: 0 */
-    const regexToken = /(((https?):\/\/)[\-\w@:%_\+.~#?,&\/\/=]+)/g;
+    const regexToken = /(((https?):\/\/)[\-\w@:%_\+.~#?,&\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\/\/=]+)/g;
 
     // Iterate through any URLs in the text.
     /* eslint no-cond-assign: 0 */
@@ -99,7 +93,7 @@ class Comic extends React.PureComponent<Props, State> {
             uri={this.findUrl(content)}
             width={width}
           />
-          <View style={styles.row}>
+          <View style={styles.infoWrapper}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.published}>
               {date}
@@ -112,6 +106,7 @@ class Comic extends React.PureComponent<Props, State> {
             color="orange"
             compact
             style={{ width: '100%' }}
+            onPress={() => Linking.openURL(link)}
           >
             See on CommitStrip.com
           </Button>
