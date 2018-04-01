@@ -55,3 +55,6 @@ buck-out/
 
 # IDE
 .vscode
+
+# assets
+assets/*.psd
