@@ -86,6 +86,7 @@ class Comic extends React.PureComponent<Props, State> {
         navigation={navigation}
         hideSearch
         hideLogo
+        title={title}
         share={{ title, link }}
       >
         <ScrollView style={styles.wrapper}>

@@ -6,6 +6,7 @@ import {
   Platform,
   Share,
   Image,
+  View,
 } from 'react-native';
 import {
   Colors,
@@ -24,7 +25,6 @@ type Props = {
   navigation: any,
   children: any,
   title: string,
-  subtitle: string,
   theme: Theme,
   hideSearch: boolean,
   hideShare: boolean,
@@ -42,6 +42,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.grey200,
+  },
+  logoWrapper: {
+    flex: 3,
   },
   logo: {
     marginLeft: 10,
@@ -96,7 +99,6 @@ class BaseLayout extends React.PureComponent<Props, State> {
       navigation,
       children,
       title,
-      subtitle,
       hideSearch,
       hideLogo,
       hideShare,
@@ -115,11 +117,12 @@ class BaseLayout extends React.PureComponent<Props, State> {
               onPress={() => navigation.goBack()}
             />}
           {!hideLogo &&
-            <Image style={styles.logo} source={Logo} />}
+            <View style={styles.logoWrapper}>
+              <Image style={styles.logo} source={Logo} />
+            </View>}
           {!hideContent &&
             <ToolbarContent
               title={title}
-              subtitle={subtitle}
             />}
           {!hideSearch &&
             <ToolbarAction

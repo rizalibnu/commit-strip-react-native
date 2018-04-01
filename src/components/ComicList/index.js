@@ -158,6 +158,7 @@ class Listings extends React.PureComponent<Props, State> {
         hideShare
         hideBackButton
         hideSearch
+        hideContent
       >
         <FlatList
           data={this.state.data}
