@@ -59,7 +59,7 @@ class Comic extends React.PureComponent<Props, State> {
 
     // Regular expression to find HTTP(S).
     /* eslint no-useless-escape: 0 */
-    const regexToken = /(((https?):\/\/)[\-\w@:%_\+.~#?,&\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\/\/=]+)/g;
+    const regexToken = /(((https?):\/\/)[\-\w@:%_\+.~#?,&\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\/\/=]+(.(jpg|jpeg|png|bmp)))/g;
 
     // Iterate through any URLs in the text.
     /* eslint no-cond-assign: 0 */
