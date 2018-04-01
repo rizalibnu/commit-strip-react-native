@@ -31,3 +31,6 @@ declare module 'react-native-paper/types' {
 declare module 'react-native-vector-icons/Ionicons' {
   declare module.exports: any;
 }
+declare module 'moment' {
+  declare module.exports: any;
+}

@@ -12,6 +12,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "moment": "^2.22.0",
     "react": "^16.3.0-alpha.1",
     "react-native": "0.54.4",
     "react-native-paper": "^1.2.5",
@@ -19,8 +20,8 @@
     "react-navigation": "^1.5.8"
   },
   "devDependencies": {
-    "babel-jest": "22.4.3",
     "babel-eslint": "^8.2.2",
+    "babel-jest": "22.4.3",
     "babel-plugin-transform-remove-console": "^6.9.0",
     "babel-preset-react-native": "4.0.0",
     "babel-preset-react-native-stage-0": "^1.0.1",

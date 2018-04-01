@@ -13,6 +13,7 @@ import {
   withTheme,
   Button,
 } from 'react-native-paper';
+import Moment from 'moment';
 
 import BaseLayout from '../BaseLayout';
 import ComicImage from './ComicImage';
@@ -78,8 +79,7 @@ class Comic extends React.PureComponent<Props, State> {
       content,
     } = navigation.state.params.data;
 
-    console.log(content);
-    console.log(this.findUrl(content));
+    Moment.locale('en');
 
     return (
       <BaseLayout
@@ -96,7 +96,7 @@ class Comic extends React.PureComponent<Props, State> {
           <View style={styles.infoWrapper}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.published}>
-              {date}
+              {Moment(date).format('dddd, D MMMM YYYY')}
             </Text>
           </View>
         </ScrollView>
