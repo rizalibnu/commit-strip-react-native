@@ -1,6 +1,9 @@
 // @flow
 import * as React from 'react';
-import { Image } from 'react-native';
+import {
+  Image,
+  Animated,
+} from 'react-native';
 import {
   Colors,
 } from 'react-native-paper';
@@ -15,6 +18,7 @@ type State = {
   source: Object,
   width: number,
   height: number,
+  opacity: any,
 };
 
 class ComicImage extends React.PureComponent<Props, State> {
@@ -30,6 +34,7 @@ class ComicImage extends React.PureComponent<Props, State> {
       },
       width: 0,
       height: 200,
+      opacity: new Animated.Value(0),
     };
   }
 
@@ -45,9 +50,29 @@ class ComicImage extends React.PureComponent<Props, State> {
     });
   }
 
+  handleLoad = () => {
+    Animated.timing(this.state.opacity, {
+      toValue: 1,
+      duration: 250,
+    }).start();
+  }
+
   render() {
     const { width, height } = this.state;
-    return <Image source={this.state.source} style={{ height, width, backgroundColor: Colors.grey300 }} />;
+
+    return (
+      <Animated.Image
+        resizeMode="contain"
+        source={this.state.source}
+        onLoad={this.handleLoad}
+        style={{
+          width,
+          height,
+          backgroundColor: Colors.grey300,
+          opacity: this.state.opacity,
+        }}
+      />
+    );
   }
 }
 
