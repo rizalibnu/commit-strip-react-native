@@ -7,6 +7,7 @@ import {
   Share,
   Image,
   View,
+  StatusBar,
 } from 'react-native';
 import {
   Colors,
@@ -111,6 +112,10 @@ class BaseLayout extends React.PureComponent<Props, State> {
 
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: background }]}>
+        <StatusBar
+          backgroundColor="#2B3F6B"
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+        />
         <Toolbar>
           {!hideBackButton &&
             <ToolbarBackAction
