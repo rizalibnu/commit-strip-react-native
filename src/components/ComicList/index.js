@@ -114,7 +114,9 @@ class Listings extends React.PureComponent<Props, State> {
   };
 
   handleEnd = () => {
-    this.setState(state => ({ page: state.page + 1 }), () => this.fetchData());
+    if (this.state.data.length >= 10) {
+      this.setState(state => ({ page: state.page + 1 }), () => this.fetchData());
+    }
   };
 
   renderComic = ({ item }) => {
