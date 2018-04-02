@@ -20,14 +20,14 @@ import LogoSmall from '../../../assets/logo_small.png';
 
 type Props = {
   navigation: any,
-};
-
-type State = {
   data: Array<Object>,
-  page: number,
   loading: boolean,
   refreshing: boolean,
+  callbackHandleRefresh: Function,
+  callbackHandleEnd: Function,
 };
+
+type State = {};
 
 const { width, height } = Dimensions.get('window');
 
@@ -75,50 +75,6 @@ const styles = StyleSheet.create({
 });
 
 class Listings extends React.PureComponent<Props, State> {
-  constructor() {
-    super();
-    this.state = {
-      data: [],
-      page: 1,
-      loading: false,
-      refreshing: false,
-    };
-  }
-
-  componentWillMount() {
-    this.fetchData();
-  }
-
-  fetchData = async () => {
-    this.setState({ loading: true });
-    const response = await fetch(`https://www.commitstrip.com/en/wp-json/wp/v2/posts?per_page=10&page=${this.state.page}`);
-    const json = await response.json();
-    this.setState(state => ({
-      data: [...state.data, ...json],
-      loading: false,
-      refreshing: false,
-    }));
-  };
-
-  handleRefresh = () => {
-    this.setState(
-      {
-        page: 1,
-        refreshing: true,
-        data: [],
-      },
-      () => {
-        this.fetchData();
-      },
-    );
-  };
-
-  handleEnd = () => {
-    if (this.state.data.length >= 10) {
-      this.setState(state => ({ page: state.page + 1 }), () => this.fetchData());
-    }
-  };
-
   renderComic = ({ item }) => {
     const { navigation } = this.props;
 
@@ -164,8 +120,10 @@ class Listings extends React.PureComponent<Props, State> {
   }
 
   renderFooter = () => {
-    if (this.state.loading) {
-      if (this.state.data.length === 0) {
+    const { data, loading } = this.props;
+
+    if (loading) {
+      if (data.length === 0) {
         return (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: height - 56 }}>
             <ActivityIndicator size="large" animating />
@@ -178,7 +136,7 @@ class Listings extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, data, refreshing, callbackHandleRefresh, callbackHandleEnd } = this.props;
 
     const loadingView = (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -194,15 +152,15 @@ class Listings extends React.PureComponent<Props, State> {
         hideSearch
         hideContent
       >
-        {this.state.refreshing ? loadingView :
+        {refreshing ? loadingView :
         <FlatList
-          data={this.state.data}
+          data={data}
           keyExtractor={item => item.id.toString()}
           renderItem={this.renderComic}
-          onEndReached={() => this.handleEnd()}
+          onEndReached={callbackHandleEnd}
           onEndReachedThreshold={0.5}
-          onRefresh={this.handleRefresh}
-          refreshing={this.state.refreshing}
+          onRefresh={callbackHandleRefresh}
+          refreshing={refreshing}
           ListFooterComponent={this.renderFooter}
         />}
       </BaseLayout>
