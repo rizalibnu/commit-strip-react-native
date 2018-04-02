@@ -4,10 +4,10 @@ import {
   View,
   Animated,
   StyleSheet,
+  Image,
 } from 'react-native';
-import {
-  Colors,
-} from 'react-native-paper';
+
+import Placeholder from '../../../assets/placeholder.jpg';
 
 type Props = {
   id: number,
@@ -58,26 +58,30 @@ class FeaturedImage extends React.PureComponent<Props, State> {
 
   render() {
     const { children, stylesheet, ...props } = this.props;
-    const { data } = this.state;
-
-    if (this.state.loading) return <View style={{ height: 200, backgroundColor: Colors.grey300 }} />;
+    const { data, loading } = this.state;
 
     return (
-      <View style={[stylesheet, { backgroundColor: Colors.grey300 }]}>
-        <Animated.Image
-          {...props}
+      <View style={[stylesheet, { backgroundColor: 'transparent' }]}>
+        <Image
+          style={stylesheet}
+          source={Placeholder}
           resizeMode="cover"
-          source={{ uri: data.media_details.sizes.full.source_url }}
-          onLoad={this.handleLoad}
-          style={[
-            StyleSheet.absoluteFill,
-            {
-              width: stylesheet ? stylesheet.width : 0,
-              height: stylesheet ? stylesheet.height : 0,
-              opacity: this.state.opacity,
-            },
-          ]}
         />
+        {!loading &&
+          <Animated.Image
+            {...props}
+            resizeMode="cover"
+            source={{ uri: data.media_details.sizes.full.source_url }}
+            onLoad={this.handleLoad}
+            style={[
+              StyleSheet.absoluteFill,
+              {
+                width: stylesheet ? stylesheet.width : 0,
+                height: stylesheet ? stylesheet.height : 0,
+                opacity: this.state.opacity,
+              },
+            ]}
+          />}
         {children}
       </View>
     );
