@@ -1,8 +1,9 @@
 # Commit Strip React Native
-A [CommitStrip.com](https://www.commicstrip.com) Reader built in React Native for iOS and Android
+A Commit Strip Reader built in React Native for iOS and Android
 
-[![commicstrip.com android app download](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png "google play")
-](http://bit.ly/commitstripapp)
+<a href="http://bit.ly/commitstripapp" target="_blank">
+<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" title="google play" alt="commicstrip.com android app download" />
+</a>
 
 <img src="assets/screenshot-1.jpg" width="170" height="300" /> <img src="assets/screenshot-2.jpg" width="170" height="300" /> <img src="assets/screenshot-3.jpg" width="170" height="300" />
 
