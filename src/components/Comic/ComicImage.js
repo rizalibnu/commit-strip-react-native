@@ -3,15 +3,19 @@ import * as React from 'react';
 import {
   Image,
   Animated,
+  View,
 } from 'react-native';
 import {
   Colors,
 } from 'react-native-paper';
 
+import Placeholder from '../../../assets/placeholder.jpg';
+
 type Props = {
   uri: string,
   width: number,
   height: ?number,
+  callbackHandleLoadImage: Function,
 };
 
 type State = {
@@ -19,6 +23,7 @@ type State = {
   width: number,
   height: number,
   opacity: any,
+  loading: boolean,
 };
 
 class ComicImage extends React.PureComponent<Props, State> {
@@ -33,8 +38,9 @@ class ComicImage extends React.PureComponent<Props, State> {
         uri: props.uri,
       },
       width: 0,
-      height: 200,
+      height: 0,
       opacity: new Animated.Value(0),
+      loading: true,
     };
   }
 
@@ -57,21 +63,37 @@ class ComicImage extends React.PureComponent<Props, State> {
     }).start();
   }
 
+  handleLoadEnd = () => {
+    this.setState({
+      loading: false,
+    });
+    this.props.callbackHandleLoadImage(false);
+  }
+
   render() {
-    const { width, height } = this.state;
+    const { width, height, loading } = this.state;
 
     return (
-      <Animated.Image
-        resizeMode="contain"
-        source={this.state.source}
-        onLoad={this.handleLoad}
-        style={{
-          width,
-          height,
-          backgroundColor: Colors.grey300,
-          opacity: this.state.opacity,
-        }}
-      />
+      <View>
+        {loading &&
+          <Image
+            style={{ width: this.props.width, height: 200 }}
+            source={Placeholder}
+            resizeMode="cover"
+          />}
+        <Animated.Image
+          resizeMode="contain"
+          source={this.state.source}
+          onLoad={this.handleLoad}
+          onLoadEnd={this.handleLoadEnd}
+          style={{
+            width,
+            height,
+            backgroundColor: Colors.grey300,
+            opacity: this.state.opacity,
+          }}
+        />
+      </View>
     );
   }
 }

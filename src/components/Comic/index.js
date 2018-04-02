@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   Linking,
+  ActivityIndicator,
 } from 'react-native';
 import {
   Colors,
@@ -22,7 +23,9 @@ type Props = {
   navigation: any,
 };
 
-type State = {};
+type State = {
+  loading: boolean,
+};
 
 const { width } = Dimensions.get('window');
 
@@ -51,6 +54,13 @@ const styles = StyleSheet.create({
 
 /* eslint camelcase: 0 */
 class Comic extends React.PureComponent<Props, State> {
+  constructor() {
+    super();
+
+    this.state = {
+      loading: true,
+    };
+  }
   /* eslint class-methods-use-this: 0 */
   findUrl(text) {
     const source = (text || '').toString();
@@ -70,6 +80,12 @@ class Comic extends React.PureComponent<Props, State> {
     return urlArray[0];
   }
 
+  handleLoadImage(newState) {
+    this.setState({
+      loading: newState,
+    });
+  }
+
   render() {
     const { navigation } = this.props;
     const {
@@ -78,6 +94,7 @@ class Comic extends React.PureComponent<Props, State> {
       title,
       content,
     } = navigation.state.params.data;
+    const { loading } = this.state;
 
     Moment.locale('en');
 
@@ -93,13 +110,18 @@ class Comic extends React.PureComponent<Props, State> {
           <ComicImage
             uri={this.findUrl(content)}
             width={width}
+            callbackHandleLoadImage={newState => this.handleLoadImage(newState)}
           />
-          <View style={styles.infoWrapper}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.published}>
-              {Moment(date).format('dddd, D MMMM YYYY')}
-            </Text>
-          </View>
+          {loading ?
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 200 }}>
+              <ActivityIndicator size="large" animating />
+            </View> :
+            <View style={styles.infoWrapper}>
+              <Text style={styles.title}>{title}</Text>
+              <Text style={styles.published}>
+                {Moment(date).format('dddd, D MMMM YYYY')}
+              </Text>
+            </View>}
         </ScrollView>
         <View style={styles.button}>
           <Button
