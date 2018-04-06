@@ -27,7 +27,9 @@ type Props = {
   callbackHandleEnd: Function,
 };
 
-type State = {};
+type State = {
+  pageWidth: number,
+};
 
 const { width, height } = Dimensions.get('window');
 
@@ -42,12 +44,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   imageBackground: {
-    width,
     height: 200,
     overflow: 'hidden',
   },
   headline: {
-    width,
     position: 'absolute',
     bottom: 0,
     backgroundColor: '#1f1f1f',
@@ -75,8 +75,22 @@ const styles = StyleSheet.create({
 });
 
 class Listings extends React.PureComponent<Props, State> {
+  constructor() {
+    super();
+    this.state = {
+      pageWidth: width,
+    };
+  }
+
+  getNewDimensions = (event) => {
+    this.setState({
+      pageWidth: event.nativeEvent.layout.width,
+    });
+  }
+
   renderComic = ({ item }) => {
     const { navigation } = this.props;
+    const { pageWidth } = this.state;
 
     if (item.status !== 'publish') return null;
 
@@ -96,17 +110,18 @@ class Listings extends React.PureComponent<Props, State> {
           },
         })}
       >
-        <View style={styles.itemWrapper}>
+        <View onLayout={this.getNewDimensions}>
           <FeaturedImage
             id={item.featured_media}
             stylesheet={styles.imageBackground}
+            width={pageWidth}
           >
             <Image
               style={styles.logoSmall}
               source={LogoSmall}
               resizeMode="contain"
             />
-            <View style={styles.headline}>
+            <View style={[styles.headline, { width: pageWidth }]}>
               <View style={styles.titleWrapper}>
                 <Text numberOfLines={1} style={styles.title}>
                   {item.title.rendered}
@@ -137,6 +152,7 @@ class Listings extends React.PureComponent<Props, State> {
 
   render() {
     const { navigation, data, refreshing, callbackHandleRefresh, callbackHandleEnd } = this.props;
+    const { pageWidth } = this.state;
 
     const loadingView = (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -162,6 +178,7 @@ class Listings extends React.PureComponent<Props, State> {
           onRefresh={callbackHandleRefresh}
           refreshing={refreshing}
           ListFooterComponent={this.renderFooter}
+          extraData={pageWidth}
         />}
       </BaseLayout>
     );

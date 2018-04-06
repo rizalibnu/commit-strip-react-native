@@ -44,7 +44,17 @@ class ComicImage extends React.PureComponent<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    this.getImageSize();
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.props.width !== nextProps.width) {
+      this.getImageSize();
+    }
+  }
+
+  getImageSize() {
     Image.getSize(this.props.uri, (width, height) => {
       if (this.props.width && !this.props.height) {
         this.setState({ width: this.props.width, height: height * (this.props.width / width) });

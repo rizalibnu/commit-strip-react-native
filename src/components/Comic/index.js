@@ -25,6 +25,7 @@ type Props = {
 
 type State = {
   loading: boolean,
+  pageWidth: number,
 };
 
 const { width } = Dimensions.get('window');
@@ -45,10 +46,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.grey600,
   },
-  button: {
+  buttonWrapper: {
     position: 'absolute',
     bottom: 0,
-    width: width - 8,
   },
 });
 
@@ -59,8 +59,16 @@ class Comic extends React.PureComponent<Props, State> {
 
     this.state = {
       loading: true,
+      pageWidth: width,
     };
   }
+
+  getNewDimensions = (event) => {
+    this.setState({
+      pageWidth: event.nativeEvent.layout.width,
+    });
+  }
+
   /* eslint class-methods-use-this: 0 */
   findUrl(text) {
     const source = (text || '').toString();
@@ -94,7 +102,7 @@ class Comic extends React.PureComponent<Props, State> {
       title,
       content,
     } = navigation.state.params.data;
-    const { loading } = this.state;
+    const { loading, pageWidth } = this.state;
 
     Moment.locale('en');
 
@@ -106,10 +114,10 @@ class Comic extends React.PureComponent<Props, State> {
         title={title}
         share={{ title, link }}
       >
-        <ScrollView style={styles.wrapper}>
+        <ScrollView style={styles.wrapper} onLayout={this.getNewDimensions}>
           <ComicImage
             uri={this.findUrl(content)}
-            width={width}
+            width={pageWidth}
             callbackHandleLoadImage={newState => this.handleLoadImage(newState)}
           />
           {loading ?
@@ -123,7 +131,7 @@ class Comic extends React.PureComponent<Props, State> {
               </Text>
             </View>}
         </ScrollView>
-        <View style={styles.button}>
+        <View style={[styles.buttonWrapper, { width: pageWidth - 8 }]}>
           <Button
             raised
             color="orange"

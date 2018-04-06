@@ -13,6 +13,7 @@ type Props = {
   id: number,
   children: any,
   stylesheet: Object,
+  width: number,
 };
 
 type State = {
@@ -57,13 +58,13 @@ class FeaturedImage extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { children, stylesheet, ...props } = this.props;
+    const { children, stylesheet, width, ...props } = this.props;
     const { data, loading } = this.state;
 
     return (
-      <View style={[stylesheet, { backgroundColor: 'transparent' }]}>
+      <View style={[stylesheet, { backgroundColor: 'transparent', width }]}>
         <Image
-          style={stylesheet}
+          style={[stylesheet, { width }]}
           source={Placeholder}
           resizeMode="cover"
         />
@@ -76,8 +77,8 @@ class FeaturedImage extends React.PureComponent<Props, State> {
             style={[
               StyleSheet.absoluteFill,
               {
-                width: stylesheet ? stylesheet.width : 0,
-                height: stylesheet ? stylesheet.height : 0,
+                width,
+                height: stylesheet.height,
                 opacity: this.state.opacity,
               },
             ]}
