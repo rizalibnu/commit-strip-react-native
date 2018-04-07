@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class Listings extends React.PureComponent<Props, State> {
+class ComicList extends React.PureComponent<Props, State> {
   constructor() {
     super();
     this.state = {
@@ -185,4 +185,4 @@ class Listings extends React.PureComponent<Props, State> {
   }
 }
 
-export default withTheme(Listings);
+export default withTheme(ComicList);

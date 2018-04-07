@@ -14,6 +14,8 @@ type State = {
   refreshing: boolean,
 };
 
+const limitPerPage = 10;
+
 class ComicListContainer extends React.PureComponent<Props, State> {
   constructor() {
     super();
@@ -31,7 +33,7 @@ class ComicListContainer extends React.PureComponent<Props, State> {
 
   fetchData = async () => {
     this.setState({ loading: true });
-    const response = await fetch(`https://www.commitstrip.com/en/wp-json/wp/v2/posts?per_page=10&page=${this.state.page}`);
+    const response = await fetch(`https://www.commitstrip.com/en/wp-json/wp/v2/posts?per_page=${limitPerPage}&page=${this.state.page}`);
     const json = await response.json();
     this.setState(state => ({
       data: [...state.data, ...json],
@@ -54,7 +56,7 @@ class ComicListContainer extends React.PureComponent<Props, State> {
   };
 
   handleEnd = () => {
-    if (this.state.data.length >= 10) {
+    if (this.state.data.length >= limitPerPage) {
       this.setState(state => ({ page: state.page + 1 }), () => this.fetchData());
     }
   };
